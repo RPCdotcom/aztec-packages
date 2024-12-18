@@ -5,48 +5,54 @@ namespace bb::avm2 {
 
 AvmFlavor::AllConstRefValues::AllConstRefValues(
     const RefArray<AvmFlavor::AllConstRefValues::BaseDataType, AvmFlavor::NUM_ALL_ENTITIES>& il)
-    : precomputed_first_row(il[0])
-    , execution_input(il[1])
-    , alu_dst_addr(il[2])
-    , alu_ia(il[3])
-    , alu_ia_addr(il[4])
-    , alu_ib(il[5])
-    , alu_ib_addr(il[6])
-    , alu_ic(il[7])
-    , alu_op(il[8])
-    , alu_sel_op_add(il[9])
-    , execution_addressing_error_idx(il[10])
-    , execution_addressing_error_kind(il[11])
-    , execution_clk(il[12])
-    , execution_ex_opcode(il[13])
-    , execution_indirect(il[14])
-    , execution_last(il[15])
-    , execution_op1(il[16])
-    , execution_op1_after_relative(il[17])
-    , execution_op2(il[18])
-    , execution_op2_after_relative(il[19])
-    , execution_op3(il[20])
-    , execution_op3_after_relative(il[21])
-    , execution_op4(il[22])
-    , execution_op4_after_relative(il[23])
-    , execution_pc(il[24])
-    , execution_rop1(il[25])
-    , execution_rop2(il[26])
-    , execution_rop3(il[27])
-    , execution_rop4(il[28])
-    , execution_sel(il[29])
-    , execution_sel_addressing_error(il[30])
-    , execution_sel_op1_is_address(il[31])
-    , execution_sel_op2_is_address(il[32])
-    , execution_sel_op3_is_address(il[33])
-    , execution_sel_op4_is_address(il[34])
-    , execution_selector(il[35])
-    , execution_stack_pointer_tag(il[36])
-    , execution_stack_pointer_val(il[37])
-    , lookup_dummy_counts(il[38])
-    , lookup_dummy_inv(il[39])
-    , execution_clk_shift(il[40])
-    , execution_sel_shift(il[41])
+    : precomputed_bitwise_input_a(il[0])
+    , precomputed_bitwise_input_b(il[1])
+    , precomputed_bitwise_op_id(il[2])
+    , precomputed_bitwise_output(il[3])
+    , precomputed_clk(il[4])
+    , precomputed_first_row(il[5])
+    , precomputed_sel_bitwise(il[6])
+    , execution_input(il[7])
+    , alu_dst_addr(il[8])
+    , alu_ia(il[9])
+    , alu_ia_addr(il[10])
+    , alu_ib(il[11])
+    , alu_ib_addr(il[12])
+    , alu_ic(il[13])
+    , alu_op(il[14])
+    , alu_sel_op_add(il[15])
+    , execution_addressing_error_idx(il[16])
+    , execution_addressing_error_kind(il[17])
+    , execution_clk(il[18])
+    , execution_ex_opcode(il[19])
+    , execution_indirect(il[20])
+    , execution_last(il[21])
+    , execution_op1(il[22])
+    , execution_op1_after_relative(il[23])
+    , execution_op2(il[24])
+    , execution_op2_after_relative(il[25])
+    , execution_op3(il[26])
+    , execution_op3_after_relative(il[27])
+    , execution_op4(il[28])
+    , execution_op4_after_relative(il[29])
+    , execution_pc(il[30])
+    , execution_rop1(il[31])
+    , execution_rop2(il[32])
+    , execution_rop3(il[33])
+    , execution_rop4(il[34])
+    , execution_sel(il[35])
+    , execution_sel_addressing_error(il[36])
+    , execution_sel_op1_is_address(il[37])
+    , execution_sel_op2_is_address(il[38])
+    , execution_sel_op3_is_address(il[39])
+    , execution_sel_op4_is_address(il[40])
+    , execution_selector(il[41])
+    , execution_stack_pointer_tag(il[42])
+    , execution_stack_pointer_val(il[43])
+    , lookup_dummy_counts(il[44])
+    , lookup_dummy_inv(il[45])
+    , execution_clk_shift(il[46])
+    , execution_sel_shift(il[47])
 {}
 
 AvmFlavor::ProverPolynomials::ProverPolynomials(ProvingKey& proving_key)
@@ -63,7 +69,13 @@ AvmFlavor::ProverPolynomials::ProverPolynomials(ProvingKey& proving_key)
 
 AvmFlavor::AllConstRefValues AvmFlavor::ProverPolynomials::get_row(size_t row_idx) const
 {
-    return RefArray{ precomputed_first_row[row_idx],
+    return RefArray{ precomputed_bitwise_input_a[row_idx],
+                     precomputed_bitwise_input_b[row_idx],
+                     precomputed_bitwise_op_id[row_idx],
+                     precomputed_bitwise_output[row_idx],
+                     precomputed_clk[row_idx],
+                     precomputed_first_row[row_idx],
+                     precomputed_sel_bitwise[row_idx],
                      execution_input[row_idx],
                      alu_dst_addr[row_idx],
                      alu_ia[row_idx],
@@ -109,7 +121,13 @@ AvmFlavor::AllConstRefValues AvmFlavor::ProverPolynomials::get_row(size_t row_id
 
 AvmFlavor::CommitmentLabels::CommitmentLabels()
 {
+    Base::precomputed_bitwise_input_a = "PRECOMPUTED_BITWISE_INPUT_A";
+    Base::precomputed_bitwise_input_b = "PRECOMPUTED_BITWISE_INPUT_B";
+    Base::precomputed_bitwise_op_id = "PRECOMPUTED_BITWISE_OP_ID";
+    Base::precomputed_bitwise_output = "PRECOMPUTED_BITWISE_OUTPUT";
+    Base::precomputed_clk = "PRECOMPUTED_CLK";
     Base::precomputed_first_row = "PRECOMPUTED_FIRST_ROW";
+    Base::precomputed_sel_bitwise = "PRECOMPUTED_SEL_BITWISE";
     Base::execution_input = "EXECUTION_INPUT";
     Base::alu_dst_addr = "ALU_DST_ADDR";
     Base::alu_ia = "ALU_IA";

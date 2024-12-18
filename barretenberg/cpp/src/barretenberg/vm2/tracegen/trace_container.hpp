@@ -5,11 +5,11 @@
 #include <cstddef>
 #include <functional>
 #include <memory>
-#include <ranges>
 #include <shared_mutex>
 #include <span>
 #include <unordered_map>
 
+#include "barretenberg/vm2/common/field.hpp"
 #include "barretenberg/vm2/generated/columns.hpp"
 #include "barretenberg/vm2/generated/flavor_settings.hpp"
 
@@ -19,8 +19,10 @@ namespace bb::avm2::tracegen {
 // Contention can only happen when concurrently accessing the same column.
 class TraceContainer {
   public:
-    using FF = AvmFlavorSettings::FF;
     TraceContainer();
+
+    const FF& get(Column col, size_t row) const;
+    std::vector<const FF*> get_multiple(std::span<const Column> cols, size_t row) const;
 
     void set(Column col, size_t row, const FF& value);
     // Bulk setting for a given row.
@@ -32,7 +34,7 @@ class TraceContainer {
     size_t get_column_size(Column col) const;
     // Maximum number of rows in any column.
     size_t get_num_rows() const;
-    // Number of columns.
+    // Number of columns (without shifts).
     static constexpr size_t num_columns() { return NUM_COLUMNS; }
 
     // Free column memory.

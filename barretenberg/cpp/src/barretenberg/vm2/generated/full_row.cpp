@@ -19,7 +19,13 @@ template <typename FF> std::string field_to_string(const FF& ff)
 
 template <typename FF> std::vector<std::string> AvmFullRow<FF>::names()
 {
-    return { "precomputed_first_row",
+    return { "precomputed_bitwise_input_a",
+             "precomputed_bitwise_input_b",
+             "precomputed_bitwise_op_id",
+             "precomputed_bitwise_output",
+             "precomputed_clk",
+             "precomputed_first_row",
+             "precomputed_sel_bitwise",
              "execution_input",
              "alu_dst_addr",
              "alu_ia",
@@ -64,7 +70,13 @@ template <typename FF> std::vector<std::string> AvmFullRow<FF>::names()
 template <typename FF> RefVector<const FF> AvmFullRow<FF>::as_vector() const
 {
     return RefVector<const FF>{
+        precomputed_bitwise_input_a,
+        precomputed_bitwise_input_b,
+        precomputed_bitwise_op_id,
+        precomputed_bitwise_output,
+        precomputed_clk,
         precomputed_first_row,
+        precomputed_sel_bitwise,
         execution_input,
         alu_dst_addr,
         alu_ia,

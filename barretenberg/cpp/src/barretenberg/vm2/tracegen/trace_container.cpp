@@ -1,19 +1,44 @@
 #include "barretenberg/vm2/tracegen/trace_container.hpp"
 
 #include "barretenberg/common/log.hpp"
+#include "barretenberg/vm2/common/field.hpp"
 
 namespace bb::avm2::tracegen {
+namespace {
+
+// We need a zero value to return (a reference to) when a value is not found.
+static const FF zero = FF::zero();
+
+} // namespace
 
 TraceContainer::TraceContainer()
     : trace(std::make_unique<std::array<SparseColumn, NUM_COLUMNS>>())
 {}
 
+const FF& TraceContainer::get(Column col, size_t row) const
+{
+    auto& column_data = (*trace)[static_cast<size_t>(col)];
+    std::shared_lock lock(column_data.mutex);
+    const auto it = column_data.rows.find(row);
+    return it == column_data.rows.end() ? zero : it->second;
+}
+
+std::vector<const FF*> TraceContainer::get_multiple(std::span<const Column> cols, size_t row) const
+{
+    std::vector<const FF*> values;
+    values.reserve(cols.size());
+    for (const auto col : cols) {
+        values.push_back(&get(col, row));
+    }
+    return values;
+}
+
 void TraceContainer::set(Column col, size_t row, const FF& value)
 {
     auto& column_data = (*trace)[static_cast<size_t>(col)];
     std::unique_lock lock(column_data.mutex);
-    if (value != 0) {
-        column_data.rows[row] = value;
+    if (!value.is_zero()) {
+        column_data.rows.insert_or_assign(row, value);
     } else {
         column_data.rows.erase(row);
     }
