@@ -8,13 +8,17 @@ Aztec is in full-speed development. Literally every version breaks compatibility
 
 ## TBD
 
-### PXE.registerContact --> PXE.registerSender
-`registerContact` has been deemed confusing because the name is too similar to `registerContract`.
+### Name change from `contact` to `sender` in PXE API
+`contact` has been deemed confusing because the name is too similar to `contract`.
 For this reason we've decided to rename it:
 
 ```diff
 - await pxe.registerContact(address);
 + await pxe.registerSender(address);
+- await pxe.getContacts();
++ await pxe.getSenders();
+- await pxe.removeContact(address);
++ await pxe.removeSender(address);
 ```
 
 ## 0.67.1
