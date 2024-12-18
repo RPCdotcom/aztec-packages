@@ -184,12 +184,12 @@ const std::unordered_map<WireOpCode, std::vector<OperandType>> WireOpCode_WIRE_F
       { OperandType::INDIRECT8, OperandType::UINT16, OperandType::UINT16, OperandType::UINT16, OperandType::UINT16 } },
     // Gadget - Conversion
     { WireOpCode::TORADIXBE,
-      { OperandType::INDIRECT8,
+      { OperandType::INDIRECT16,
         OperandType::UINT16,
         OperandType::UINT16,
         OperandType::UINT16,
         OperandType::UINT16,
-        OperandType::UINT8 } },
+        OperandType::UINT16 } },
 };
 
 } // namespace
