@@ -39,7 +39,7 @@ void run_check_circuit(AvmFlavor::ProverPolynomials& polys, size_t num_rows)
             for (size_t r = 0; r < num_rows; ++r) {
                 Relation::accumulate(result, polys.get_row(r), {}, 1);
                 for (size_t j = 0; j < result.size(); ++j) {
-                    if (result[j] != 0) {
+                    if (!result[j].is_zero()) {
                         throw std::runtime_error(format("Relation ",
                                                         Relation::NAME,
                                                         ", subrelation ",
@@ -65,7 +65,7 @@ void run_check_circuit(AvmFlavor::ProverPolynomials& polys, size_t num_rows)
                 Relation::accumulate(lookup_result, polys.get_row(r), params, 1);
             }
             for (auto r : lookup_result) {
-                if (r != 0) {
+                if (!r.is_zero()) {
                     throw std::runtime_error(format("Lookup ", Relation::NAME, " failed."));
                 }
             }

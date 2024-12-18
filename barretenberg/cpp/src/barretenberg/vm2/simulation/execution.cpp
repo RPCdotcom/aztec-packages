@@ -81,7 +81,7 @@ void Execution::jumpi(ContextInterface& context, MemoryAddress cond_addr, uint32
 
     // TODO: in gadget.
     auto resolved_cond = memory.get(cond_addr);
-    if (resolved_cond.value != 0) {
+    if (!resolved_cond.value.is_zero()) {
         context.set_next_pc(loc);
     }
 }

@@ -41,6 +41,7 @@ struct FastSettings {
     using AddressingEventEmitter = NoopEventEmitter<AddressingEvent>;
     using BytecodeHashingEventEmitter = NoopEventEmitter<BytecodeHashingEvent>;
     using BytecodeDecompositionEventEmitter = NoopEventEmitter<BytecodeDecompositionEvent>;
+    // Customization can go here, for example a BytecodeManager that does NOT hash bytecodes.
 };
 
 } // namespace

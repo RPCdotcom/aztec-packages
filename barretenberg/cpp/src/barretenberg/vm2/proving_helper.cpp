@@ -55,7 +55,14 @@ AvmProver::ProverPolynomials compute_polynomials(tracegen::TraceContainer& trace
                        }
                    }));
 
-    // catch-all with fully formed polynomials
+    // Catch-all with fully formed polynomials
+    // Note: derived polynomials (i.e., inverses) are not in the trace at this point, because they can only
+    // be computed after committing to the other witnesses. Therefore, they will be initialized as empty
+    // and they will be not set below. The derived polynomials will be reinitialized and set in the prover
+    // itself mid-proving. (TO BE DONE!).
+    //
+    // NOTE FOR SELF: however, the counts will be known here and the inv have the same size?
+    // think about it and check the formula.
     AVM_TRACK_TIME("proving/init_polys_unshifted", ({
                        auto unshifted = polys.get_unshifted();
 
@@ -80,12 +87,6 @@ AvmProver::ProverPolynomials compute_polynomials(tracegen::TraceContainer& trace
 
     AVM_TRACK_TIME("proving/set_polys_unshifted", ({
                        auto unshifted = polys.get_unshifted();
-
-                       // FIXME: We don't support handling of derived polynomials.
-                       // This means that the derived polynomials will be empty.
-                       // Therefore, you shouldn't try to write to them.
-                       // In other words, the trace should be empty for inverse columns.
-                       // This will only be correct if the lookup/perm selectors are always 0.
 
                        // TODO: We are now visiting per-column. Profile if per-row is better.
                        // This would need changes to the trace container.

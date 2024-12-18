@@ -17,7 +17,7 @@ void check_relation_internal(const Trace& trace, std::span<size_t> subrelations)
     for (size_t r = 0; r < trace.size(); ++r) {
         Relation::accumulate(result, trace.at(r), {}, 1);
         for (size_t j : subrelations) {
-            if (result[j] != 0) {
+            if (!result[j].is_zero()) {
                 throw std::runtime_error(format("Relation ",
                                                 Relation::NAME,
                                                 ", subrelation ",
