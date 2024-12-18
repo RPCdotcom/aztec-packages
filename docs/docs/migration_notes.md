@@ -6,6 +6,17 @@ keywords: [sandbox, aztec, notes, migration, updating, upgrading]
 
 Aztec is in full-speed development. Literally every version breaks compatibility with the previous ones. This page attempts to target errors and difficulties you might encounter when upgrading, and how to resolve them.
 
+## TBD
+
+### PXE.registerContact --> PXE.registerSender
+`registerContact` has been deemed confusing because the name is too similar to `registerContract`.
+For this reason we've decided to rename it:
+
+```diff
+- await pxe.registerContact(address);
++ await pxe.registerSender(address);
+```
+
 ## 0.67.1
 
 ### Noir contracts package no longer exposes artifacts as default export
