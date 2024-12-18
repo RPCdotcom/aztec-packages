@@ -1,6 +1,7 @@
 import {
   type EpochProofClaim,
   EpochProofQuote,
+  EpochProofQuoteHasher,
   EpochProofQuotePayload,
   type EpochProverManager,
   type L1ToL2MessageSource,
@@ -320,12 +321,14 @@ describe('prover-node', () => {
         epochProofQuotePool: new MemoryEpochProofQuotePool(telemetryClient),
       };
       const epochCache = mock<EpochCache>();
+      const epochProofQuoteHasher = new EpochProofQuoteHasher(EthAddress.random(), 1);
       const libp2pService = await createTestLibP2PService(
         P2PClientType.Prover,
         [bootnodeAddr],
         l2BlockSource,
         worldState,
         epochCache,
+        epochProofQuoteHasher,
         mempools,
         telemetryClient,
         port,
